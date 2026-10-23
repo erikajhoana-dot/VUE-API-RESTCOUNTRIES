@@ -1,5 +1,19 @@
+<script setup>
+
+import { obtener_paises } from './services/countryService';
+import { ref, onMounted } from 'vue';
+
+const paises = ref([]); 
+
+onMounted(async() => {
+  paises.value = await obtener_paises();
+  console.log("Países recibidos:", paises.value);
+}); 
+
+</script>
+
 <template>
-  
+
   <header>
     <div id="columna-1">
       <h1>Explorador de paises</h1>
