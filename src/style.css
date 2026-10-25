@@ -1,0 +1,23 @@
+.country_card {
+    background: white;
+    border-radius: 16px;
+    padding: 20px;
+    box-shadow: 0 4px 14px #343d8015;
+    border: 1px solid #e5e7f5;
+}
+
+.country_card img {
+    width: 100%;
+    height: 150px;
+    object-fit: contain;
+}
+
+.country_card h2 {
+    color: #343D80;
+    margin: 12px 0;
+}
+
+.country_card p {
+    color: #555;
+    margin: 8px 0;
+}
