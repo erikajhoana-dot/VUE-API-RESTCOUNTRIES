@@ -7,7 +7,6 @@ const paises = ref([]);
 
 onMounted(async() => {
   paises.value = await obtener_paises();
-  console.log("Países recibidos:", paises.value);
 }); 
 
 </script>
@@ -27,6 +26,15 @@ onMounted(async() => {
   <main>
     <div id="barra-inputs">
       <input type="text" placeholder="Busca un país..." />
+      <ul>
+        <li v-for="pais in paises">
+          <img :src="pais.flag.url_png" :alt="'Bandera de ' + pais.names.common"/>
+          <h2>{{ pais.names.common }}</h2>
+          <p>Capital: {{ pais.capitals?.[0]?.name || 'No disponible' }}</p>
+          <p>Region: {{ pais.region }}</p>
+          <p>Población: {{ pais.population }} habitantes</p>
+        </li>
+      </ul>
     </div>
   </main>
 </template>

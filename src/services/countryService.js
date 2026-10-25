@@ -9,8 +9,3 @@ export async function obtener_paises() {
     const datos = await response.json();
     return datos.data.objects;
 }
-
-obtener_paises().then(paises => {
-    console.log("Total de países:", paises.length);
-    console.log("Primer país:", paises[0].names.common);
-});
