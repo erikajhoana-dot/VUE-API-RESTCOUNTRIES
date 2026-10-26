@@ -9,3 +9,4 @@ export async function obtener_paises() {
     const datos = await response.json();
     return datos.data.objects;
 }
+

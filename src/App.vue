@@ -1,14 +1,33 @@
 <script setup>
 
 import { obtener_paises } from './services/countryService';
-import { ref, onMounted } from 'vue';
+import { ref, onMounted, computed } from 'vue';
 import CountryCard from './components/CountryCard.vue';
 
 const paises = ref([]); 
 
-onMounted(async() => {
-  paises.value = await obtener_paises();
-}); 
+const paisesFiltrados = computed(() => {
+    return paises.value.filter(pais =>
+        pais.names.common.toLowerCase().includes(busqueda.value.toLowerCase()) || pais.region.toLowerCase().includes(busqueda.value.toLowerCase())
+    );
+});
+
+const busqueda = ref("")
+
+const cargando = ref(true)
+
+const errorCarga = ref("");
+
+onMounted(async () => {
+    try {
+        paises.value = await obtener_paises();
+    } catch (error) {
+        errorCarga.value = "No fue posible cargar los países";
+    } finally {
+        cargando.value = false;
+    }
+});
+
 
 </script>
 
@@ -18,7 +37,7 @@ onMounted(async() => {
 
     <div id="columna-1">
       <h1>Explorador de paises</h1>
-      <p>Conoce la información de todos los paises del mundo.<br />Busca, filtra y descrube sus datos más interesantes.</p>
+      <p>Conoce la información de algunos paises del mundo.<br/>Consulta banderas, capitales, regiones y población.<br/>Busca y filtra países en un solo lugar.</p>
     </div>
 
     <div id="columna-2">
@@ -30,12 +49,18 @@ onMounted(async() => {
   <main>
 
     <div id="barra-inputs">
-      <input type="text" placeholder="Busca un país..." />
+      <input type="text" placeholder="Busca un país..." v-model="busqueda"/>
     </div>
 
-    <div id="contenedor-paises">
-      <CountryCard v-for="pais in paises" :pais="pais"></CountryCard>
+    <p v-if="cargando" class="mensajes">Cargando paises...</p>
+
+    <p v-else-if="errorCarga" class="mensajes error">{{ errorCarga }}</p>
+
+    <div v-else-if="paisesFiltrados.length > 0" id="contenedor-paises">
+      <CountryCard v-for="pais in paisesFiltrados" :pais="pais"></CountryCard>
     </div>
+
+    <p v-else class="mensajes">No se encontraron países que coincidan con tu búsqueda.</p>
 
   </main>
 
